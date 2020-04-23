@@ -14,7 +14,7 @@ router.post('/adicionar', async (req, res) =>{
 		return res.status(400).send({ error: 'registration fail'});
 	}
 
-	});
+});
 
 
 module.exports = app => app.use('produtos', router);
