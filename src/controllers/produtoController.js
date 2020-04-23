@@ -5,7 +5,8 @@ const Produto = require('../models/produtos');
 
 const router = express.Router();
 
-router.use(authmiddleware);
+// A linha abaixo ativa o authMiddleware. Só ativar quando tudo estiver pronto.
+// router.use(authmiddleware);
 
 router.post('/adicionar', async (req, res) =>{
 	try {
