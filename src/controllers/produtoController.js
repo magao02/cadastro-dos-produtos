@@ -1,6 +1,5 @@
 const express = require('express');
 
-
 const Produto = require('../models/produtos');
 
 const router = express.Router();
@@ -18,4 +17,4 @@ router.post('/adicionar', async (req, res) =>{
 	});
 
 
-module.exports = app => app.use('auth', router);
+module.exports = app => app.use('produtos', router);
