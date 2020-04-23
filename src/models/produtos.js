@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+const mongoose = require('../database');
 
 const ProdutoSchema = new mongoose.Schema({
 	produtos: {

@@ -1,11 +1,9 @@
 const mongoose = require('mongoose');
 
-mongoose.connect('mongodb://localhost/noderest', {
+mongoose.connect(process.env.DB_CONNECT, {
 	useCreateIndex: true,
 	UseNewUrlParser: true,
 	useUNifiedTopology: true,
 });
-
-mongoose.Promise = global.Promise;
 
 module.exports = mongoose;
