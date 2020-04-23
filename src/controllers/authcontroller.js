@@ -7,7 +7,7 @@ const router = express.Router();
 
 router.post('/adicionar', async (req, res) =>{
 	try {
-		const Produto = await Produto.create(req.body);	
+		const produto = await Produto.create(req.body);	
 
 		return res.send( { produto });
 
