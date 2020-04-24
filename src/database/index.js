@@ -2,8 +2,9 @@ const mongoose = require('mongoose');
 
 mongoose.connect(process.env.DB_CONNECT, {
 	useCreateIndex: true,
-	UseNewUrlParser: true,
-	useUNifiedTopology: true,
+	useNewUrlParser: true,
+	useUnifiedTopology: true,
+	useFindAndModify: false,
 });
 
 module.exports = mongoose;
