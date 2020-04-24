@@ -1,0 +1,2 @@
+DB_CONNECT=mongodb+srv://desenvolvedor:estoquenaja@cluster0-gt4pq.gcp.mongodb.net/test?retryWrites=true&w=majority
+ADMIN1=davigomes4747@gmail.com
