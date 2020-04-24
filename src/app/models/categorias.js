@@ -1,16 +1,12 @@
-const mongoose = require('../database');
+const mongoose = require('../../database');
 
 const CategoriasSchema = new mongoose.Schema({
-	Categoria: {
+	nome: {
 		type: String,		
 		require: true,
-
-
 	}
-
-	
 });
 
 const Categorias = mongoose.model('Categorias', CategoriasSchema);
 
-module.exports = Produto;
+module.exports = Categorias;
