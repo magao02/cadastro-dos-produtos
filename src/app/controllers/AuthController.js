@@ -1,37 +1,37 @@
 const jwt = require('jsonwebtoken');
 const axios = require('axios');
 
-const authconfig = require("../../config/auth");
+const authconfig = require('../../config/auth');
 const admins = require('../../config/admins');
 
-function generatetoken(params = {}){
-	return jwt.sign(params, authconfig.secret, {
-		expiresIn: 86400
-	})
+function generatetoken(params = {}) {
+  return jwt.sign(params, authconfig.secret, {
+    expiresIn: 86400,
+  });
 }
 
 class AuthController {
-  async criar(req, res) {
+  static async criar(req, res) {
     const { accesstoken } = req.headers;
 
-    if (!accesstoken)
-      return res.status(400).send({ error : "Access token not provided"});
+    if (!accesstoken) { return res.status(400).send({ error: 'Access token not provided' }); }
 
     const path = `https://www.googleapis.com/oauth2/v1/userinfo?access_token=${accesstoken}`;
-    const response = undefined;
+    let response;
     try {
       response = await axios.get(path);
     } catch (err) {
-      return res.status(403).json({ error: 'Access Forbidden' })
+      return res.status(403).json({ error: 'Access Forbidden' });
     }
 
     const user = response.data;
-    if (!(admins.includes(user.email)))
-      return res.status(401).json({ error: 'Você não é administrador.' })
+    if (!(admins.includes(user.email))) { return res.status(401).json({ error: 'Você não é administrador.' }); }
 
-    return res.send({ user,
-      token: generatetoken({id: user.id}),});
-    }
+    return res.send({
+      user,
+      token: generatetoken({ id: user.id }),
+    });
+  }
 }
 
-module.exports = new AuthController();
+module.exports = AuthController;

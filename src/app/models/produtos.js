@@ -1,8 +1,6 @@
 const mongoose = require('../../database');
 
 const ProdutoSchema = new mongoose.Schema({
-	
-	
 
 	categoria: {
 		type: mongoose.Schema.Types.ObjectId,
@@ -23,8 +21,8 @@ const ProdutoSchema = new mongoose.Schema({
 
 	createdAt: {
 		type: Date,
-		 default: Date.now,	
-		}
+		default: Date.now,	
+	}
 
 });
 
