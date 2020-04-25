@@ -35,7 +35,13 @@ class CategoriaController {
   }
 
   static async deletar(req, res) {
-    await Categorias.findByIdAndRemove(req.params.id);
+    const { nome } = req.body;
+
+    try {
+      await Categorias.findOneAndRemove({ nome });
+    } catch (err) {
+      return res.status(500).send({ error: 'Erro ao deletar a categoria.' });
+    }
 
     return res.send({
       msg: 'Categoria removida.',
