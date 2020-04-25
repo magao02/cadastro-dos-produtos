@@ -1,3 +1,5 @@
+const fs = require('fs');
+
 const Produto = require('../models/produtos');
 const Categorias = require('../models/categorias');
 
@@ -5,6 +7,8 @@ class ProdutoController {
   static async criar(req, res) {
     try {
       const { nome, quantidade, categoria } = req.body;
+
+      const { path } = req.file;
 
       const categoriaObj = await Categorias.findOne({
         nome: categoria,
@@ -15,14 +19,15 @@ class ProdutoController {
         categoria: categoriaObj.id,
         nome,
         quantidade,
+        imagem: path,
       });
 
       categoriaObj.produtos.push(produto.id);
-      categoriaObj.save();
+      await categoriaObj.save();
 
       return res.send({ produto });
     } catch (err) {
-      return res.status(400).send({ error: 'registration fail' });
+      return res.status(400).send({ error: 'Não foi possível criar o produto.' });
     }
   }
 
@@ -48,7 +53,11 @@ class ProdutoController {
 
   static async deletar(req, res) {
     try {
-      await Produto.findByIdAndRemove(req.params.id);
+      const { id } = req.params;
+      const produto = await Produto.findById(id);
+
+      await fs.unlink(produto.imagem);
+      await produto.remove();
 
       return res.send({ msg: 'Produto deletado.' });
     } catch (err) {
@@ -56,6 +65,5 @@ class ProdutoController {
     }
   }
 }
-
 
 module.exports = ProdutoController;

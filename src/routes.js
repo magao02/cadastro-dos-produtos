@@ -1,4 +1,6 @@
 const express = require('express');
+const multer = require('multer');
+const multerConfig = require('./config/multer');
 
 const routes = express.Router();
 
@@ -13,7 +15,10 @@ routes.post('/login', AuthController.criar);
 // routes.use(authMiddleware);
 
 routes.get('/produtos', ProdutoController.listar);
-routes.post('/produtos/adicionar', ProdutoController.criar);
+
+const upload = multer(multerConfig);
+routes.post('/produtos/adicionar', upload.single('imagem'), ProdutoController.criar);
+
 routes.delete('/produtos/:id', ProdutoController.deletar);
 
 routes.get('/categorias', CategoriaController.listar);
