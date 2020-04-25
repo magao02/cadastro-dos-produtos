@@ -1,6 +1,9 @@
 const mongoose = require('../../database');
 
 const ProdutoSchema = new mongoose.Schema({
+	
+	
+
 	categoria: {
 		type: mongoose.Schema.Types.ObjectId,
 		ref: 'Categorias',

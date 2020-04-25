@@ -1,4 +1,6 @@
 const express = require('express');
+const multer = require("multer");
+const multerConfig = require("./config/multer");
 
 const routes = express.Router();
 
@@ -20,6 +22,22 @@ routes.get('/categorias', CategoriaController.listar);
 routes.get('/categorias/:nome', CategoriaController.encontrar);
 routes.post('/categorias/adicionar', CategoriaController.criar);
 routes.delete('/categorias/:id', CategoriaController.deletar);
+
+
+const Imagem = require("./models/imagem");
+routes.post("/imagem", multer(multerConfig).single("file"), async (req, res) => {
+  
+
+  const imagem = await Post.create({
+    nome: req.file.name,
+    size: req.file.size,
+    key: req.file.filename,
+    url: ""
+  });
+
+  return res.json( imagem );
+});
+
 
 
 module.exports = routes;

@@ -4,7 +4,7 @@ const Categorias = require('../models/categorias');
 class ProdutoController {
 	async criar(req, res) {
 		try {
-			const { nome, quantidade, categoria } = req.body;
+			const {  nome, quantidade, categoria } = req.body;
 	
 			const categoriaObj = await Categorias.findOne({
 				nome: categoria,
@@ -13,6 +13,7 @@ class ProdutoController {
 				return res.status(400).send({ error: 'Categoria não encontrada.' })
 	
 			const produto = await Produto.create({
+				
 				categoria: categoriaObj.id,
 				nome,
 				quantidade
