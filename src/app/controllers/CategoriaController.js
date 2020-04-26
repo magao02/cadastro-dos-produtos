@@ -13,7 +13,8 @@ class CategoriaController {
   }
 
   static async listar(req, res) {
-    const categorias = await Categorias.find();
+    let categorias = await Categorias.find().select('nome');
+    categorias = categorias.map((categoria) => categoria.nome);
 
     return res.send({ categorias });
   }
