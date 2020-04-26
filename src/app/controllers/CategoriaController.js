@@ -1,4 +1,5 @@
 const Categorias = require('../models/categorias');
+const Produto = require('../models/produtos');
 
 class CategoriaController {
   static async criar(req, res) {
@@ -18,7 +19,8 @@ class CategoriaController {
   }
 
   static async encontrar(req, res) {
-    const { nome } = req.params;
+    let { nome } = req.params;
+    nome = decodeURI(nome);
 
     try {
       const categoria = await Categorias.findOne({ nome });
@@ -35,10 +37,16 @@ class CategoriaController {
   }
 
   static async deletar(req, res) {
-    const { nome } = req.body;
+    let { nome } = req.params;
+    nome = decodeURI(nome);
 
     try {
-      await Categorias.findOneAndRemove({ nome });
+      const categoria = await Categorias.findOne({ nome });
+      categoria.produtos.forEach(async (id) => {
+        const produto = await Produto.findById(id);
+        await produto.remove();
+      });
+      await categoria.remove();
     } catch (err) {
       return res.status(500).send({ error: 'Erro ao deletar a categoria.' });
     }

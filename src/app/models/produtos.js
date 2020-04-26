@@ -1,3 +1,4 @@
+const fs = require('fs');
 const mongoose = require('../../database');
 
 const ProdutoSchema = new mongoose.Schema({
@@ -28,6 +29,12 @@ const ProdutoSchema = new mongoose.Schema({
     default: Date.now,
   },
 
+});
+
+ProdutoSchema.post('remove', async (produto) => {
+  fs.unlink(`./${produto.imagem}`, (err) => {
+    if (err) throw err;
+  });
 });
 
 const Produto = mongoose.model('Produto', ProdutoSchema);

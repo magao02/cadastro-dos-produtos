@@ -24,6 +24,6 @@ routes.delete('/produtos/:id', ProdutoController.deletar);
 routes.get('/categorias', CategoriaController.listar);
 routes.get('/categorias/:nome', CategoriaController.encontrar);
 routes.post('/categorias/adicionar', CategoriaController.criar);
-routes.delete('/categorias/:id', CategoriaController.deletar);
+routes.delete('/categorias/:nome', CategoriaController.deletar);
 
 module.exports = routes;

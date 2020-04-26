@@ -1,5 +1,3 @@
-const fs = require('fs');
-
 const Produto = require('../models/produtos');
 const Categorias = require('../models/categorias');
 
@@ -33,7 +31,7 @@ class ProdutoController {
 
   static async listar(req, res) {
     try {
-      const produtos = await Produto.find().populate('categoria');
+      const produtos = await Produto.find();
 
       return res.send({ produtos });
     } catch (err) {
@@ -56,7 +54,11 @@ class ProdutoController {
       const { id } = req.params;
       const produto = await Produto.findById(id);
 
-      await fs.unlink(produto.imagem);
+      const categoria = await Categorias.findById(produto.categoria);
+      const produtos = categoria.produtos.filter((itemId) => !(itemId.equals(produto.id)));
+      categoria.produtos = produtos;
+      await categoria.save();
+
       await produto.remove();
 
       return res.send({ msg: 'Produto deletado.' });
