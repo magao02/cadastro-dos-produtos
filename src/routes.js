@@ -15,10 +15,9 @@ routes.post('/login', AuthController.criar);
 // routes.use(authMiddleware);
 
 routes.get('/produtos', ProdutoController.listar);
-
 const upload = multer(multerConfig);
 routes.post('/produtos/adicionar', upload.single('imagem'), ProdutoController.criar);
-
+routes.put('/produtos/:id', ProdutoController.atualizar);
 routes.delete('/produtos/:id', ProdutoController.deletar);
 
 routes.get('/categorias', CategoriaController.listar);

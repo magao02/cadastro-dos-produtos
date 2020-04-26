@@ -29,6 +29,22 @@ class ProdutoController {
     }
   }
 
+  static async atualizar(req, res) {
+    try {
+      const { id } = req.params;
+      const produto = await Produto.findById(id);
+
+      const { quantidade } = req.body;
+      produto.quantidade = quantidade;
+
+      await produto.save();
+
+      return res.send({ produto });
+    } catch (err) {
+      return res.status(500).send({ error: 'Erro ao atualizar o produto.' });
+    }
+  }
+
   static async listar(req, res) {
     try {
       const produtos = await Produto.find();
