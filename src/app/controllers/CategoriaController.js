@@ -2,7 +2,7 @@ const Categorias = require('../models/categorias');
 const Produto = require('../models/produtos');
 
 class CategoriaController {
-  async criar(req, res) {
+  static async criar(req, res) {
     const { nome } = req.body;
 
     const categoria = await Categorias.create({
@@ -12,31 +12,49 @@ class CategoriaController {
     return res.send({ msg: 'Categoria criada!', categoria });
   }
 
-  async listar(req, res) {
+  static async listar(req, res) {
     const categorias = await Categorias.find();
 
     return res.send({ categorias });
   }
 
-  async encontrar(req, res) {
-    const { nome } = req.params;
+  static async encontrar(req, res) {
+    let { nome } = req.params;
+    nome = decodeURI(nome);
 
-    const categoria = await Categorias.findOne({ nome });
-    const produtos = await Produto.find().where({ categoria: categoria.id});
+    try {
+      const categoria = await Categorias.findOne({ nome });
 
-    return res.send({
-      categoria: categoria.nome,
-      produtos,
-    });
+      return res.send({
+        categoria: {
+          nome,
+          produtos: categoria.produtos,
+        },
+      });
+    } catch (err) {
+      return res.status(404).send({ error: 'Categoria não encontrada.' });
+    }
   }
 
-  async deletar(req, res) {
-    await Categorias.findByIdAndRemove(req.params.id);
+  static async deletar(req, res) {
+    let { nome } = req.params;
+    nome = decodeURI(nome);
+
+    try {
+      const categoria = await Categorias.findOne({ nome });
+      categoria.produtos.forEach(async (id) => {
+        const produto = await Produto.findById(id);
+        await produto.remove();
+      });
+      await categoria.remove();
+    } catch (err) {
+      return res.status(500).send({ error: 'Erro ao deletar a categoria.' });
+    }
 
     return res.send({
-      msg: 'Categoria removida.'
-    })
+      msg: 'Categoria removida.',
+    });
   }
 }
 
-module.exports = new CategoriaController();
+module.exports = CategoriaController;
