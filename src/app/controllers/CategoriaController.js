@@ -13,7 +13,8 @@ class CategoriaController {
   }
 
   static async listar(req, res) {
-    const categorias = await Categorias.find();
+    let categorias = await Categorias.find().select('nome');
+    categorias = categorias.map((categoria) => categoria.nome);
 
     return res.send({ categorias });
   }
@@ -23,12 +24,20 @@ class CategoriaController {
     nome = decodeURI(nome);
 
     try {
-      const categoria = await Categorias.findOne({ nome });
+      let produtos;
+      if (nome !== 'Todos') {
+        const categoria = await Categorias.findOne({ nome }).populate('produtos');
+        produtos = categoria.produtos;
+      } else {
+        produtos = await Produto.find();
+      }
+
+      produtos.sort((a, b) => a.quantidade - b.quantidade);
 
       return res.send({
         categoria: {
           nome,
-          produtos: categoria.produtos,
+          produtos,
         },
       });
     } catch (err) {

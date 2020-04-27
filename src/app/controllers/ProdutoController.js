@@ -1,12 +1,16 @@
+const path = require('path');
+
 const Produto = require('../models/produtos');
 const Categorias = require('../models/categorias');
 
 class ProdutoController {
   static async criar(req, res) {
     try {
-      const { nome, quantidade, categoria } = req.body;
+      const {
+        nome, quantidade, categoria, valor,
+      } = req.body;
 
-      const { path } = req.file;
+      const { path: imagem } = req.file;
 
       const categoriaObj = await Categorias.findOne({
         nome: categoria,
@@ -17,7 +21,8 @@ class ProdutoController {
         categoria: categoriaObj.id,
         nome,
         quantidade,
-        imagem: path,
+        valor,
+        imagem,
       });
 
       categoriaObj.produtos.push(produto.id);
@@ -57,9 +62,10 @@ class ProdutoController {
 
   static async encontrar(req, res) {
     try {
-      const produto = await Produto.findById(req.params.ProdutoId).populate('Categorias');
+      const { id } = req.params;
+      const produto = await Produto.findById(id);
 
-      return res.send({ produto });
+      return res.sendFile(path.join(__dirname, `../../../${produto.imagem}`));
     } catch (err) {
       return res.status(400).send({ error: 'produto não encontrado' });
     }
