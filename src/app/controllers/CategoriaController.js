@@ -26,10 +26,13 @@ class CategoriaController {
     try {
       const categoria = await Categorias.findOne({ nome });
 
+      const { produtos } = categoria;
+      produtos.sort((a, b) => a.quantidade - b.quantidade);
+
       return res.send({
         categoria: {
           nome,
-          produtos: categoria.produtos,
+          produtos,
         },
       });
     } catch (err) {
