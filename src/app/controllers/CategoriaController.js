@@ -24,7 +24,7 @@ class CategoriaController {
     nome = decodeURI(nome);
 
     try {
-      const categoria = await Categorias.findOne({ nome });
+      const categoria = await Categorias.findOne({ nome }).populate('produtos');
 
       const { produtos } = categoria;
       produtos.sort((a, b) => a.quantidade - b.quantidade);
