@@ -4,7 +4,9 @@ const Categorias = require('../models/categorias');
 class ProdutoController {
   static async criar(req, res) {
     try {
-      const { nome, quantidade, categoria } = req.body;
+      const {
+        nome, quantidade, categoria, valor,
+      } = req.body;
 
       const { path } = req.file;
 
@@ -17,6 +19,7 @@ class ProdutoController {
         categoria: categoriaObj.id,
         nome,
         quantidade,
+        valor,
         imagem: path,
       });
 
