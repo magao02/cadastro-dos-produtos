@@ -11,11 +11,11 @@ const ProdutoController = require('./app/controllers/ProdutoController');
 const CategoriaController = require('./app/controllers/CategoriaController');
 
 routes.post('/login', AuthController.criar);
+routes.get('/produtos/:id', ProdutoController.encontrar);
 
 routes.use(authMiddleware);
 
 routes.get('/produtos', ProdutoController.listar);
-routes.get('/produtos/:id', ProdutoController.encontrar);
 const upload = multer(multerConfig);
 routes.post('/produtos/adicionar', upload.single('imagem'), ProdutoController.criar);
 routes.put('/produtos/:id', ProdutoController.atualizar);
