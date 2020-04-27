@@ -24,9 +24,14 @@ class CategoriaController {
     nome = decodeURI(nome);
 
     try {
-      const categoria = await Categorias.findOne({ nome }).populate('produtos');
+      let produtos;
+      if (nome !== 'Todos') {
+        const categoria = await Categorias.findOne({ nome }).populate('produtos');
+        produtos = categoria.produtos;
+      } else {
+        produtos = await Produto.find();
+      }
 
-      const { produtos } = categoria;
       produtos.sort((a, b) => a.quantidade - b.quantidade);
 
       return res.send({
