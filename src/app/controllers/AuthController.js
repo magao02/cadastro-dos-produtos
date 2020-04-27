@@ -2,7 +2,7 @@ const jwt = require('jsonwebtoken');
 const axios = require('axios');
 
 const authconfig = require('../../config/auth');
-const admins = require('../../config/admins');
+// const admins = require('../../config/admins');
 
 function generatetoken(params = {}) {
   return jwt.sign(params, authconfig.secret, {
@@ -25,7 +25,10 @@ class AuthController {
     }
 
     const user = response.data;
-    if (!(admins.includes(user.email))) { return res.status(401).json({ error: 'Você não é administrador.' }); }
+    // A próxima linha verificaria se o e-mail está entre os administradores.
+    /* if (!(admins.includes(user.email))) {
+      return res.status(401).json({ error: 'Você não é administrador.' });
+    } */
 
     return res.send({
       user,
